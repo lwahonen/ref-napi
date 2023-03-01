@@ -30,7 +30,7 @@
   },
   "main": "./lib/ref.js",
   "scripts": {
-    "install": "PYTHON=python3 node-gyp-build", 
+    "install": "node-gyp-build", 
     "prebuild": "prebuildify -t 12.22.12 -t 13.14.0 -t 14.18.3 -t 14.20.1 -t 14.21.2 -t 15.14.0 -t 16.19.0 -t 17.9.1 -t 18.12.1 -t 19.3.0 --napi --tag-armv --tag-uv --tag-libc"
   },
   "dependencies": {
