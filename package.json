@@ -1,0 +1,46 @@
+{
+  "name": "@inigolabs/ref-napi",
+  "description": "Turn Buffer instances into \"pointers\", with \"v8::ArrayBuffer::GetBackingStore\" patch",
+  "engines": {
+    "node": ">= 12.22.12"
+  },
+  "keywords": [
+    "native",
+    "buffer",
+    "extensions",
+    "c++",
+    "pointer",
+    "reference",
+    "dereference",
+    "type",
+    "int",
+    "long",
+    "float",
+    "double",
+    "byte",
+    "64",
+    "napi"
+  ],
+  "version": "4.0.6",
+  "license": "MIT",
+  "author": "Anna Henningsen <anna@addaleax.net>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/node-ffi-napi/ref-napi.git"
+  },
+  "main": "./lib/ref.js",
+  "scripts": {
+    "install": "PYTHON=python3 node-gyp-build", 
+    "prebuild": "prebuildify -t 12.22.12 -t 13.14.0 -t 14.18.3 -t 14.20.1 -t 14.21.2 -t 15.14.0 -t 16.19.0 -t 17.9.1 -t 18.12.1 -t 19.3.0 --napi --tag-armv --tag-uv --tag-libc"
+  },
+  "dependencies": {
+    "debug": "^4.3.4",
+    "get-symbol-from-current-process-h": "^1.0.2",
+    "node-addon-api": "^3.2.1",
+    "node-gyp-build": "^4.5.0"
+  },
+  "devDependencies": {
+    "prebuildify": "^5.0.1",
+    "weak-napi": "^2.0.0"
+  }
+}
