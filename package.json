@@ -1,5 +1,5 @@
 {
-  "name": "@inigolabs/ref-napi",
+  "name": "@lwahonen/ref-napi",
   "description": "Turn Buffer instances into \"pointers\", with \"v8::ArrayBuffer::GetBackingStore\" patch",
   "engines": {
     "node": ">= 12.22.12"
