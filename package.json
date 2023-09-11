@@ -21,12 +21,12 @@
     "64",
     "napi"
   ],
-  "version": "4.0.8",
+  "version": "4.0.9",
   "license": "MIT",
-  "author": "Anna Henningsen <anna@addaleax.net>",
+  "author": "LWAhonen lwahonen@github",
   "repository": {
     "type": "git",
-    "url": "git://github.com/node-ffi-napi/ref-napi.git"
+    "url": "git://github.com/lwahonen/ref-napi.git"
   },
   "main": "./lib/ref.js",
   "scripts": {

@@ -415,13 +415,75 @@ Value ReadInt32(const CallbackInfo& args) {
   char* ptr = AddressForArgs(args);
 
   if (ptr == nullptr) {
-    throw TypeError::New(env, "readInt64: Cannot read from nullptr pointer");
+    throw TypeError::New(env, "readInt32: Cannot read from nullptr pointer");
   }
 
   int32_t val = *reinterpret_cast<int32_t*>(ptr);
 
   return Number::New(env, val);
 }
+
+
+/**
+ * Reads a machine-endian uint8_t from the given Buffer at the given offset.
+ *
+ * args[0] - Buffer - the "buf" Buffer instance to read from
+ * args[1] - Number - the offset from the "buf" buffer's address to read from
+ */
+
+Value ReadUInt8(const CallbackInfo& args) {
+  Env env = args.Env();
+  char* ptr = AddressForArgs(args);
+
+  if (ptr == nullptr) {
+    throw TypeError::New(env, "readUInt8: Cannot read from nullptr pointer");
+  }
+
+  uint8_t val = *reinterpret_cast<uint8_t*>(ptr);
+
+  return Number::New(env, val);
+}
+
+
+
+void WriteUInt8(const CallbackInfo& args) {
+  Env env = args.Env();
+  char* ptr = AddressForArgs(args);
+
+  Value in = args[2];
+  int64_t val;
+  if (in.IsNumber()) {
+    val = in.As<Number>();
+  } else if (in.IsString()) {
+    char* endptr;
+    char* str;
+    int base = 0;
+    std::string _str = in.As<String>();
+    str = &_str[0];
+
+    errno = 0;     /* To distinguish success/failure after call */
+    val = strtoll(str, &endptr, base);
+
+    if (endptr == str) {
+      throw TypeError::New(env, "WriteUInt8: no digits we found in input String");
+    } else if (errno == ERANGE && (val >= UINT_MAX || val <= UINT_MIN)) {
+      throw TypeError::New(env, "WriteUInt8: input String numerical value out of range");
+    } else if (errno != 0 && val == 0) {
+      char errmsg[200];
+      snprintf(errmsg, sizeof(errmsg), "WriteUInt8: %s", strerror(errno));
+      throw TypeError::New(env, errmsg);
+    }
+  } else {
+    throw TypeError::New(env, "WriteUInt8: Number/String 32-bit value required");
+  }
+
+  if (val < INT32_MIN || val > INT32_MAX) {
+      throw TypeError::New(env, "writeInt32: value out of range");
+  }
+
+  *reinterpret_cast<uint8_t*>(ptr) = (uint8_t)val;
+}
+
 
 
 /**
@@ -747,6 +809,9 @@ Object Init(Env env, Object exports) {
   exports["writeInt64"] = Function::New(env, WriteInt64);
   exports["readUInt64"] = Function::New(env, ReadUInt64);
   exports["writeUInt64"] = Function::New(env, WriteUInt64);
+  
+  exports["readUInt8"] = Function::New(env, ReadUInt8);
+  exports["writeUInt8"] = Function::New(env, WriteUInt8);
 
   exports["readInt32"] = Function::New(env, ReadInt32);
   exports["writeInt32"] = Function::New(env, WriteInt32);
