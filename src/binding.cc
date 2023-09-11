@@ -466,7 +466,7 @@ void WriteUInt8(const CallbackInfo& args) {
 
     if (endptr == str) {
       throw TypeError::New(env, "WriteUInt8: no digits we found in input String");
-    } else if (errno == ERANGE && (val >= UINT_MAX || val <= UINT_MIN)) {
+    } else if (errno == ERANGE && (val == UINT8_MAX || val == 0)) {
       throw TypeError::New(env, "WriteUInt8: input String numerical value out of range");
     } else if (errno != 0 && val == 0) {
       char errmsg[200];
@@ -474,11 +474,11 @@ void WriteUInt8(const CallbackInfo& args) {
       throw TypeError::New(env, errmsg);
     }
   } else {
-    throw TypeError::New(env, "WriteUInt8: Number/String 32-bit value required");
+    throw TypeError::New(env, "WriteUInt8: Number/String 8-bit value required");
   }
 
-  if (val < INT32_MIN || val > INT32_MAX) {
-      throw TypeError::New(env, "writeInt32: value out of range");
+  if (val < 0 || val > UINT8_MAX) {
+      throw TypeError::New(env, "WriteUInt8: value out of range");
   }
 
   *reinterpret_cast<uint8_t*>(ptr) = (uint8_t)val;
